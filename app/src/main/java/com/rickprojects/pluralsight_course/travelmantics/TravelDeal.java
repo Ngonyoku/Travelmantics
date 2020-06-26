@@ -1,6 +1,8 @@
 package com.rickprojects.pluralsight_course.travelmantics;
 
-public class TravelDeal {
+import java.io.Serializable;
+
+public class TravelDeal implements Serializable {
     private String id;
     private String title;
     private String description;

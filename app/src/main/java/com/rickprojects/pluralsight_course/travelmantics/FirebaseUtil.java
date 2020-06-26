@@ -11,15 +11,16 @@ public class FirebaseUtil {
     private static FirebaseUtil firebaseUtil;
     public static ArrayList<TravelDeal> mDeals;
 
-    private FirebaseUtil() {}
+    private FirebaseUtil() {
+    }
 
     public static void openFbReference(String ref) {
         if (firebaseUtil == null) {
             firebaseUtil = new FirebaseUtil();
             mFirebaseDatabase = FirebaseDatabase.getInstance();
-            mDeals = new ArrayList<TravelDeal>();
-        }
 
+        }
+        mDeals = new ArrayList<TravelDeal>();
         mDatabaseReference = mFirebaseDatabase.getReference().child(ref);
     }
 }
