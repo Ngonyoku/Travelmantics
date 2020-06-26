@@ -26,7 +26,7 @@ public class DealActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert);
 
-        FirebaseUtil.openFbReference("traveldeals");
+        FirebaseUtil.openFbReference("traveldeals", new ListActivity());
         mFirebaseDatabase = FirebaseUtil.mFirebaseDatabase;
         mDatabaseReference = FirebaseUtil.mDatabaseReference;
 
@@ -45,6 +45,21 @@ public class DealActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.save_menu, menu);
+        if (FirebaseUtil.isAdmin) {
+            menu.findItem(R.id.delete_menu).setVisible(true);
+            menu.findItem(R.id.save_menu).setVisible(true);
+            enableEditText(true);
+        } else {
+            menu.findItem(R.id.delete_menu).setVisible(false);
+            menu.findItem(R.id.save_menu).setVisible(false);
+            enableEditText(false);
+        }
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_menu:
@@ -52,7 +67,7 @@ public class DealActivity extends AppCompatActivity {
                 Toast.makeText(this, "Deal Saved", Toast.LENGTH_LONG).show();
                 clean();
                 return true;
-            case R.id.delte_menu:
+            case R.id.delete_menu:
                 deleteDeal();
                 Toast.makeText(this, "Deal deleted", Toast.LENGTH_SHORT).show();
                 backToList();
@@ -95,9 +110,9 @@ public class DealActivity extends AppCompatActivity {
         txtTitle.requestFocus();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.save_menu, menu);
-        return true;
+    private void enableEditText(boolean isEnabled) {
+        txtTitle.setEnabled(isEnabled);
+        txtPrice.setEnabled(isEnabled);
+        txtDescription.setEnabled(isEnabled);
     }
 }
