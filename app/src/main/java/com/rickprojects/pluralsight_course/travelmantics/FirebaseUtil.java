@@ -14,16 +14,20 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class FirebaseUtil {
-    public static FirebaseDatabase mFirebaseDatabase;
-    public static DatabaseReference mDatabaseReference;
+    public static FirebaseDatabase mFirebaseDatabase;//This is the entryPoint for Accessing the Firebase Realtime Database.
+    public static DatabaseReference mDatabaseReference;//location in the db where be read/write data.
     private static FirebaseUtil firebaseUtil;
     public static FirebaseAuth mFirebaseAuth;
+    public static FirebaseStorage mFirebaseStorage;
+    public static StorageReference mStorageReference;
     public static FirebaseAuth.AuthStateListener mAuthListener;
     public static ArrayList<TravelDeal> mDeals;
     private static final int RC_SIGN_IN = 123;
@@ -52,6 +56,7 @@ public class FirebaseUtil {
                     Toast.makeText(callerActivity.getBaseContext(), "Welcome Back", Toast.LENGTH_LONG).show();
                 }
             };
+            connectStorage();
         }
         mDeals = new ArrayList<TravelDeal>();
         mDatabaseReference = mFirebaseDatabase.getReference().child(ref);
@@ -117,5 +122,10 @@ public class FirebaseUtil {
 
     public static void detachListener() {
         mFirebaseAuth.removeAuthStateListener(mAuthListener);
+    }
+
+    public static void connectStorage() {
+        mFirebaseStorage = FirebaseStorage.getInstance();
+        mStorageReference = mFirebaseStorage.getReference("deals_pictures");
     }
 }
